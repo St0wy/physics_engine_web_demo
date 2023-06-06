@@ -20,6 +20,8 @@ class PhysicsEngineDemo
     PhysicsEngineDemo(std::size_t windowWidth, std::size_t windowHeight, float zoom = 16.0f);
     ~PhysicsEngineDemo();
 
+    stw::Vector2 ToWorldSpace(Vector2 screenSpacePos);
+    void HandleSpawn();
     void Loop();
 
   private:

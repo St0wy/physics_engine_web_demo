@@ -1,4 +1,4 @@
-#include "Circle.hpp"
+#include "circle.hpp"
 
 #include <raylib.h>
 namespace spe
