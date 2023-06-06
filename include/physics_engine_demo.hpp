@@ -1,5 +1,6 @@
 #pragma once
 
+#include "circle.hpp"
 #include <collision/Collider.hpp>
 #include <cstddef>
 #include <cstdint>
@@ -8,6 +9,7 @@
 #include <dynamics/Solver.hpp>
 #include <memory>
 #include <raylib.h>
+#include <vector>
 
 class PhysicsEngineDemo
 {
@@ -27,8 +29,7 @@ class PhysicsEngineDemo
     stw::DynamicsWorld m_World{};
 
     std::unique_ptr<stw::ImpulseSolver> m_ImpulseSolver;
-    std::unique_ptr<stw::SmoothPositionSolver> m_SmoothPositionSolder;
+    std::unique_ptr<stw::SmoothPositionSolver> m_SmoothPositionSolver;
 
-    std::unique_ptr<stw::Rigidbody> m_BallBody;
-    std::unique_ptr<stw::CircleCollider> m_BallCollider;
+    std::vector<Circle> m_Circles{};
 };

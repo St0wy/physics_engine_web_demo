@@ -5,8 +5,7 @@
 PhysicsEngineDemo::PhysicsEngineDemo(std::size_t windowWidth, std::size_t windowHeight, float zoom)
     : m_WindowWidth(windowWidth), m_WindowHeight(windowHeight), m_Zoom(zoom),
       m_ImpulseSolver(std::make_unique<stw::ImpulseSolver>()),
-      m_SmoothPositionSolder(std::make_unique<stw::SmoothPositionSolver>()),
-      m_BallBody(std::make_unique<stw::Rigidbody>()), m_BallCollider(std::make_unique<stw::CircleCollider>(4.0f))
+      m_SmoothPositionSolver(std::make_unique<stw::SmoothPositionSolver>())
 {
     InitWindow(m_WindowWidth, m_WindowHeight, "Physics engine demo !");
 
@@ -16,16 +15,10 @@ PhysicsEngineDemo::PhysicsEngineDemo(std::size_t windowWidth, std::size_t window
     m_World.useSpacePartitioning = false;
 
     m_World.AddSolver(m_ImpulseSolver.get());
-    m_World.AddSolver(m_SmoothPositionSolder.get());
+    m_World.AddSolver(m_SmoothPositionSolver.get());
 
-    m_BallBody->SetTransform(stw::Transform{{0.0f, 0.0f}, {1.0f, 1.0f}, 0.0f});
-    m_BallBody->SetTakesGravity(true);
-    m_BallBody->SetIsKinematic(true);
-    m_BallBody->SetRestitution(0.5f);
-    m_BallBody->SetMass(10.0f);
-
-    m_BallBody->SetCollider(m_BallCollider.get());
-    m_World.AddRigidbody(m_BallBody.get());
+    Circle c{m_World, 4.0f, stw::Vector2(0.0f, 0.0f)};
+    m_Circles.push_back(std::move(c));
 }
 
 PhysicsEngineDemo::~PhysicsEngineDemo()
@@ -46,8 +39,10 @@ void PhysicsEngineDemo::Loop()
 
         BeginMode2D(m_Camera);
 
-        auto ballPos = m_BallBody->Position();
-        DrawCircleV({ballPos.x, -ballPos.y}, m_BallCollider->radius, MAROON);
+        for (const auto &circles : m_Circles)
+        {
+            circles.Draw();
+        }
 
         EndMode2D();
 

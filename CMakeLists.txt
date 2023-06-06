@@ -39,7 +39,10 @@ cpmaddpackage(
 	SYSTEM
 )
 
-add_executable(physics_engine_web_demo include/physics_engine_demo.hpp src/main.cpp src/physics_engine_demo.cpp)
+add_executable(
+	physics_engine_web_demo include/circle.hpp include/physics_engine_demo.hpp src/circle.cpp src/main.cpp
+							src/physics_engine_demo.cpp
+)
 target_include_directories(physics_engine_web_demo PRIVATE include/)
 target_link_system_libraries(physics_engine_web_demo PRIVATE raylib StowyPhysicsEngine)
 
