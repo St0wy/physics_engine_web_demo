@@ -4,13 +4,15 @@
 #include <dynamics/Rigidbody.hpp>
 #include <dynamics/Solver.hpp>
 
-class Circle
+namespace spe
+{
+class CircleEntity
 {
   public:
-    Circle(stw::DynamicsWorld &world, float radius, stw::Vector2 position);
-    Circle(const Circle &) = delete;
-    Circle(Circle &&) = default;
-    ~Circle();
+    CircleEntity(stw::DynamicsWorld &world, float radius, stw::Vector2 position);
+    CircleEntity(const CircleEntity &) = delete;
+    CircleEntity(CircleEntity &&) = default;
+    ~CircleEntity();
 
     void Draw() const;
     stw::Rigidbody *Rigidbody() const;
@@ -21,3 +23,4 @@ class Circle
     std::unique_ptr<stw::Rigidbody> m_Body;
     std::unique_ptr<stw::CircleCollider> m_Collider;
 };
+} // namespace spe

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace spe
+{
 PhysicsEngineDemo::PhysicsEngineDemo(std::size_t windowWidth, std::size_t windowHeight, float zoom)
     : m_WindowWidth(windowWidth), m_WindowHeight(windowHeight), m_Zoom(zoom),
       m_ImpulseSolver(std::make_unique<stw::ImpulseSolver>()),
@@ -17,8 +19,15 @@ PhysicsEngineDemo::PhysicsEngineDemo(std::size_t windowWidth, std::size_t window
     m_World.AddSolver(m_ImpulseSolver.get());
     m_World.AddSolver(m_SmoothPositionSolver.get());
 
-    Circle c{m_World, 4.0f, stw::Vector2(0.0f, 0.0f)};
+    CircleEntity c{m_World, 1.0f, stw::Vector2(0.0f, 0.0f)};
     m_Circles.push_back(std::move(c));
+
+    RectangleEntity r{m_World, stw::Vector2(40.0f, 2.0f), stw::Vector2(0.0f, -5.0f)};
+    auto *rb = r.Rigidbody();
+    rb->SetIsKinematic(false);
+    rb->SetTakesGravity(false);
+    rb->SetMass(std::numeric_limits<float>::max());
+    m_Rectangles.push_back(std::move(r));
 }
 
 PhysicsEngineDemo::~PhysicsEngineDemo()
@@ -44,6 +53,11 @@ void PhysicsEngineDemo::Loop()
             circles.Draw();
         }
 
+        for (const auto &rectangles : m_Rectangles)
+        {
+            rectangles.Draw();
+        }
+
         EndMode2D();
 
         DrawFPS(10, 10);
@@ -51,3 +65,4 @@ void PhysicsEngineDemo::Loop()
         EndDrawing();
     }
 }
+} // namespace spe

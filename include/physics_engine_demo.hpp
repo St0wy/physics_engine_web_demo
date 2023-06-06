@@ -1,6 +1,7 @@
 #pragma once
 
 #include "circle.hpp"
+#include "rectangle.hpp"
 #include <collision/Collider.hpp>
 #include <cstddef>
 #include <cstdint>
@@ -11,10 +12,12 @@
 #include <raylib.h>
 #include <vector>
 
+namespace spe
+{
 class PhysicsEngineDemo
 {
   public:
-    PhysicsEngineDemo(std::size_t windowWidth, std::size_t windowHeight, float zoom = 4.0f);
+    PhysicsEngineDemo(std::size_t windowWidth, std::size_t windowHeight, float zoom = 16.0f);
     ~PhysicsEngineDemo();
 
     void Loop();
@@ -31,5 +34,7 @@ class PhysicsEngineDemo
     std::unique_ptr<stw::ImpulseSolver> m_ImpulseSolver;
     std::unique_ptr<stw::SmoothPositionSolver> m_SmoothPositionSolver;
 
-    std::vector<Circle> m_Circles{};
+    std::vector<CircleEntity> m_Circles{};
+    std::vector<RectangleEntity> m_Rectangles{};
 };
+} // namespace spe
