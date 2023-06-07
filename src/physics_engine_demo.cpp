@@ -14,9 +14,6 @@ PhysicsEngineDemo::PhysicsEngineDemo(std::size_t windowWidth, std::size_t window
     m_Camera.target = Vector2{-(m_WindowWidth / 2.0f / m_Zoom), -(m_WindowHeight / 2.0f / m_Zoom)};
     m_Camera.zoom = m_Zoom;
 
-    m_World.useSpacePartitioning = false;
-    // TODO: Add broadphase grid
-
     m_World.AddSolver(m_ImpulseSolver.get());
     m_World.AddSolver(m_SmoothPositionSolver.get());
 
@@ -48,12 +45,17 @@ void PhysicsEngineDemo::HandleSpawn()
     {
         auto mousePosScreen = GetMousePosition();
         auto mousePos = ToWorldSpace({mousePosScreen.x, mousePosScreen.y});
-        std::cout << "Prout\n" << mousePos.x << "  " << mousePos.y << "\n";
         CircleEntity c{m_World, 1.0f, mousePos};
         m_Circles.push_back(std::move(c));
     }
 
-    // TODO: Add rectangle creation
+    if (IsMouseButtonPressed(1))
+    {
+        auto mousePosScreen = GetMousePosition();
+        auto mousePos = ToWorldSpace({mousePosScreen.x, mousePosScreen.y});
+        RectangleEntity c{m_World, {2.0f, 2.0f}, mousePos};
+        m_Rectangles.push_back(std::move(c));
+    }
 }
 
 void PhysicsEngineDemo::Loop()
@@ -62,13 +64,7 @@ void PhysicsEngineDemo::Loop()
     {
         float deltaTime = GetFrameTime();
 
-        // TODO : Adjust this once broadphase is done
-        constexpr std::size_t substebCount = 8;
-        for (std::size_t i = 0; i < substebCount; i++)
-        {
-
-            m_World.Step(deltaTime / substebCount);
-        }
+        m_World.Step(deltaTime);
 
         HandleSpawn();
 
